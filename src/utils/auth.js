@@ -2,7 +2,20 @@ const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 function _checkResponse(res) {
   if (res.ok) return res.json();
-  return res.json().then((err) => Promise.reject(err));
+
+  // Try to parse as JSON first, fallback to text if it fails
+  return res.text().then((text) => {
+    try {
+      const error = JSON.parse(text);
+      return Promise.reject(error);
+    } catch (parseError) {
+      // If it's not valid JSON, return a structured error with the text
+      return Promise.reject({
+        message: text || `HTTP ${res.status}: ${res.statusText}`,
+        status: res.status,
+      });
+    }
+  });
 }
 
 export const signup = function ({ name, avatar, email, password }) {
