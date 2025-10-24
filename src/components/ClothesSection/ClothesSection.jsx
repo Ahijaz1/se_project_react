@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import ItemCard from "../ItemCard/ItemCard";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
+import CurrentUserContext from "../../Contexts/CurrentUserContext";
 import "./ClothesSection.css";
 
 function ClothesSection({
@@ -12,28 +12,10 @@ function ClothesSection({
   const { currentUser } = useContext(CurrentUserContext);
 
   // Filter clothing items to show only those owned by the current user
+  // Handle both object owner (item.owner._id) and string owner (item.owner) formats
   const userItems = clothingItems.filter(
-    (item) => item.owner?._id === currentUser?._id
+    (item) => (item.owner?._id || item.owner) === currentUser?._id
   );
-
-  // Debug logging
-  console.log("ClothesSection Debug:");
-  console.log("clothingItems:", clothingItems?.length, "items");
-  console.log("currentUser:", currentUser);
-  console.log("currentUser._id:", currentUser?._id);
-  console.log("userItems after filter:", userItems?.length, "items");
-
-  // Show a few examples of item owners
-  if (clothingItems?.length > 0) {
-    console.log(
-      "Sample item owners:",
-      clothingItems.slice(0, 3).map((item) => ({
-        name: item.name,
-        ownerId: item.owner?._id,
-        hasOwner: !!item.owner,
-      }))
-    );
-  }
 
   return (
     <div className="clothes-section">

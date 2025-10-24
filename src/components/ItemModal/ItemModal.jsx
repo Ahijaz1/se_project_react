@@ -1,6 +1,6 @@
 import "./ItemModal.css";
 import { useContext } from "react";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
+import CurrentUserContext from "../../Contexts/CurrentUserContext";
 import closeIcon from "../../images/closebutton.png";
 
 function ItemModal({ activeModal, onClose, card, handleDeleteItem }) {

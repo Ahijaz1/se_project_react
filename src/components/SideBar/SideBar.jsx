@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
+import CurrentUserContext from "../../Contexts/CurrentUserContext";
 import "./SideBar.css";
 
 function SideBar({ onEditProfile, handleLogout }) {

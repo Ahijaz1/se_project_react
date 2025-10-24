@@ -14,10 +14,10 @@ const LoginModal = ({ handleCloseModal, onSubmit, isOpen, onSignUp }) => {
       .then(() => {
         handleCloseModal();
         resetForm();
-        navigate("/profile");
+        navigate("/");
       })
       .catch((error) => {
-        console.error("Login error:", error);
+        // Handle login error silently or show user-friendly message
       });
   };
 
@@ -30,12 +30,12 @@ const LoginModal = ({ handleCloseModal, onSubmit, isOpen, onSignUp }) => {
       formValid={true}
       onSubmit={handleSubmit}
     >
-      <label htmlFor="email" className="modal__label">
+      <label htmlFor="login-email" className="modal__label">
         Email*{" "}
         <input
           type="email"
           className="modal__input"
-          id="email"
+          id="login-email"
           placeholder="Email"
           name="email"
           value={values.email || ""}
@@ -43,12 +43,12 @@ const LoginModal = ({ handleCloseModal, onSubmit, isOpen, onSignUp }) => {
           required
         />
       </label>
-      <label htmlFor="password" className="modal__label">
+      <label htmlFor="login-password" className="modal__label">
         Password*{" "}
         <input
           type="password"
           className="modal__input"
-          id="password"
+          id="login-password"
           name="password"
           placeholder="Password"
           value={values.password || ""}

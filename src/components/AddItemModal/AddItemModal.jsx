@@ -44,28 +44,28 @@ export default function AddItemModal({
       onClose={onClose}
       onSubmit={handleSubmit}
     >
-      <label htmlFor="name" className="modal__label">
+      <label htmlFor="additem-name" className="modal__label">
         Name{""}
         <input
           className="modal__input"
           value={name}
           onChange={handleNameChange}
           type="text"
-          id="name"
+          id="additem-name"
           minLength="1"
           maxLength="30"
           placeholder="Name"
           required
         />
       </label>
-      <label htmlFor="imageurl" className="modal__label">
+      <label htmlFor="additem-imageurl" className="modal__label">
         Image{""}
         <input
           className="modal__input"
           value={imageUrl}
           onChange={handleImageUrlChange}
           type="url"
-          id="imageurl"
+          id="additem-imageurl"
           placeholder="Image Url"
         />
       </label>

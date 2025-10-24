@@ -1,8 +1,6 @@
 import { useContext } from "react";
 import "./ItemCard.css";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
-import heartIcon from "../../images/heart.svg";
-import heartActiveIcon from "../../images/heart-active.svg";
+import CurrentUserContext from "../../Contexts/CurrentUserContext";
 
 function ItemCard({ item, onCardClick, onCardLike }) {
   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);

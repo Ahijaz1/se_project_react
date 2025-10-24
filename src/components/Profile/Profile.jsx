@@ -10,9 +10,6 @@ function Profile({
   handleLogout,
   onCardLike,
 }) {
-  console.log("Profile Component Rendered!");
-  console.log("Cards passed to Profile:", cards?.length, "items");
-
   return (
     <div className="profile">
       <section className="profile__sidebar">

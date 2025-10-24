@@ -9,7 +9,7 @@ import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import Profile from "../Profile/Profile";
 import CurrentTemperatureUnitContext from "../../Contexts/CurrentTemperatureUnitContext.js";
-import CurrentUserContext from "../../contexts/CurrentUserContext.js";
+import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import Footer from "../Footer/Footer";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal.jsx";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
@@ -25,8 +25,6 @@ import {
   getItems,
   addItem,
   deleteItemOld as deleteItem,
-  like,
-  unlike,
   likeItem,
   unlikeItem,
   updateProfile,
@@ -101,16 +99,12 @@ function App() {
   };
 
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
-    console.log("Adding item:", { name, imageUrl, weather });
-
     addItem({ name, imageUrl, weather })
       .then((newItem) => {
-        console.log("Item added successfully:", newItem);
         setClothingItems((prevItems) => [newItem, ...prevItems]);
         closeActiveModal();
       })
       .catch((err) => {
-        console.error("Error adding item:", err);
         alert("Failed to add item: " + err.message);
       });
   };
@@ -123,21 +117,19 @@ function App() {
   // Confirm delete handler
   const handleConfirmDelete = () => {
     if (!itemToDelete) return;
-    console.log("Deleting item:", itemToDelete);
-
     const key = itemToDelete._id || itemToDelete.id;
 
     deleteItem(key)
       .then(() => {
         setClothingItems((prev) => {
-          const updated = prev.filter((i) => (i._id || i.id) !== key);
-          console.log("Updated list:", updated);
-          return updated;
+          return prev.filter((i) => (i._id || i.id) !== key);
         });
         setItemToDelete(null);
         closeActiveModal();
       })
-      .catch((err) => console.error("Error deleting item:", err));
+      .catch((err) => {
+        alert("Failed to delete item: " + err.message);
+      });
   };
 
   // Authentication handlers
@@ -161,7 +153,6 @@ function App() {
         closeActiveModal();
       })
       .catch((error) => {
-        console.error("Registration or login failed:", error);
         return Promise.reject(error);
       })
       .finally(() => {
@@ -186,7 +177,6 @@ function App() {
         closeActiveModal();
       })
       .catch((err) => {
-        console.error("Login Error:", err);
         return Promise.reject(err);
       })
       .finally(() => setIsLoading(false));
@@ -203,7 +193,9 @@ function App() {
               cards.map((item) => (item._id === id ? updatedCard : item))
             );
           })
-          .catch((err) => console.log(err))
+          .catch((err) => {
+            // Handle error silently or show user-friendly message
+          })
       : // if not, send a request to remove the user's id from the card's likes array
         unlikeItem(id, token)
           .then((updatedCard) => {
@@ -211,7 +203,9 @@ function App() {
               cards.map((item) => (item._id === id ? updatedCard : item))
             );
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            // Handle error silently or show user-friendly message
+          });
   };
 
   const handleEditProfileSubmit = ({ name, avatar }) => {
@@ -227,7 +221,7 @@ function App() {
         closeActiveModal();
       })
       .catch((err) => {
-        console.error("Profile update error:", err);
+        alert("Failed to update profile: " + err.message);
       })
       .finally(() => {
         setIsLoading(false);
@@ -278,7 +272,9 @@ function App() {
         const filteredData = filterWeatherData(data);
         setWeatherData(filteredData);
       })
-      .catch(console.error);
+      .catch((err) => {
+        // Handle error silently or show user-friendly message if needed
+      });
   }, []);
 
   useEffect(() => {
@@ -286,7 +282,9 @@ function App() {
       .then((data) => {
         setClothingItems(data);
       })
-      .catch(console.error);
+      .catch((err) => {
+        // Handle error silently or show user-friendly message if needed
+      });
   }, []);
 
   return (
@@ -301,9 +299,6 @@ function App() {
               weatherData={weatherData}
               onSignUp={onSignUp}
               onLogIn={onLogIn}
-              isLoggedIn={isLoggedIn}
-              currentUser={currentUser}
-              onLogout={handleLogout}
             />
 
             <Routes>

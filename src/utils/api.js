@@ -1,6 +1,6 @@
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
-function _checkResponse(res) {
+export function checkResponse(res) {
   if (res.ok) return res.json();
 
   // Try to parse as JSON first, fallback to text if it fails
@@ -23,7 +23,7 @@ export function getItems() {
   return fetch(`${BASE_URL}/items`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
-  }).then(_checkResponse);
+  }).then(checkResponse);
 }
 
 /* Create item */
@@ -35,7 +35,7 @@ function createItem(data, token) {
       authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
-  }).then(_checkResponse);
+  }).then(checkResponse);
 }
 
 // Legacy function for backward compatibility
@@ -52,7 +52,7 @@ function deleteItem(itemId, token) {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-  }).then(_checkResponse);
+  }).then(checkResponse);
 }
 
 // Legacy function for backward compatibility
@@ -69,7 +69,7 @@ function addUser({ email, password, name, avatar }) {
     method: "POST",
     body: JSON.stringify({ email, password, name, avatar }),
     headers: { "Content-Type": "application/json" },
-  }).then(_checkResponse);
+  }).then(checkResponse);
 }
 
 function login({ email, password }) {
@@ -79,7 +79,7 @@ function login({ email, password }) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-  }).then(_checkResponse);
+  }).then(checkResponse);
 }
 
 /* Get current user */
@@ -90,7 +90,7 @@ function getCurrentUser(token) {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-  }).then(_checkResponse);
+  }).then(checkResponse);
 }
 
 // Legacy function for backward compatibility
@@ -106,7 +106,7 @@ function likeItem(itemId, token) {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-  }).then(_checkResponse);
+  }).then(checkResponse);
 }
 
 /* Unlike item */
@@ -117,7 +117,7 @@ function unlikeItem(itemId, token) {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-  }).then(_checkResponse);
+  }).then(checkResponse);
 }
 
 // Legacy functions for backward compatibility
@@ -140,7 +140,7 @@ function updateProfile(data, token) {
       authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
-  }).then(_checkResponse);
+  }).then(checkResponse);
 }
 
 // Legacy function for backward compatibility

@@ -1,9 +1,9 @@
 import "./Header.css";
 import { useContext } from "react";
 import CurrentTemperatureUnitContext from "../../Contexts/CurrentTemperatureUnitContext";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
+import CurrentUserContext from "../../Contexts/CurrentUserContext";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
-import logo from "../../images/logo.png";
+import logo from "../../images/Logo.png";
 import { Link } from "react-router-dom";
 
 function Header({ onAddGarment, weatherData, onSignUp, onLogIn }) {
