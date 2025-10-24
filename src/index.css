@@ -1,0 +1,3 @@
+@import url(./vendor/normalize.css);
+@import url("../src/vendor/Fonts/Fonts.css");
+@import "./components/ClothesSection/ClothesSection.css";

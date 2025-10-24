@@ -1,0 +1,99 @@
+.clothes-section {
+  flex-grow: 1;
+  padding: 0;
+  background-color: #f3f3f3;
+  overflow-y: auto;
+}
+
+.clothes-section__header {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  font-size: 20px;
+  line-height: 100%;
+  height: 25px;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.clothes-section__header-text {
+  color: #000;
+  width: 94px;
+}
+
+.clothes-section__header-btn {
+  border: none;
+  color: #00000099;
+  cursor: pointer;
+  width: auto;
+  height: 25px;
+  padding: 0 0 20px 0;
+  white-space: nowrap;
+  padding-left: 20px;
+  background-color: white;
+}
+
+.clothes-section__header-btn:hover {
+  color: #000;
+  transition: 0.2s ease;
+}
+
+.clothes-section__cards-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  gap: 20px;
+  background-color: white;
+}
+
+.clothes-section__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.clothes-section__empty-text {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 0 24px 0;
+}
+
+.clothes-section__empty-btn {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clothes-section__empty-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .clothes-section__cards-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .clothes-section__cards-list {
+    grid-template-columns: 1fr;
+  }
+
+  .clothes-section__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

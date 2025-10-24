@@ -1,0 +1,123 @@
+.delete__modal-container {
+  position: relative;
+  width: 670px;
+  height: 280px;
+  background-color: white;
+  border-radius: 20px;
+  z-index: 20;
+  font-family:
+    Cabinet Grotesk,
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+.delete__modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.delete__modal-close {
+  background: transparent;
+  border: none;
+  position: absolute;
+  padding: 0;
+  max-width: 16px;
+  max-height: 16px;
+  top: 20px;
+  right: 20px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.delete__warning-container {
+  margin-bottom: 40px;
+  padding-right: 152px;
+  padding-left: 151px;
+  font-family:
+    Cabinet Grotesk,
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+.delete__modal-warning {
+  text-align: center;
+  font-style: normal;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #000000;
+  margin: 0;
+}
+
+.delete__modal-actions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 24px;
+}
+
+.modal__button {
+  font-size: 16px;
+  line-height: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.delete__modal-button_cancel {
+  padding: 0;
+  background-color: transparent;
+  color: #000000;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.delete__modal-button_confirm {
+  padding: 0;
+  background-color: transparent;
+  color: #ff4d00;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.delete__modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  font-family:
+    Cabinet Grotesk,
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+.modal.modal_opened {
+  display: flex;
+}
+
+.modal__delete-btn {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  color: #ff4d00;
+  background: transparent;
+  border: none;
+  font-family:
+    Cabinet Grotesk,
+    Arial,
+    Helvetica,
+    sans-serif;
+}

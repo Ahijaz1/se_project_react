@@ -1,0 +1,25 @@
+.modal__error {
+  color: #ff4d00;
+  font-size: 12px;
+  line-height: 15px;
+  margin: 0;
+  padding: 0;
+  min-height: 15px;
+  display: block;
+}
+
+.modal__label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.modal__input {
+  border: none;
+  border-bottom: 1px solid #000000;
+  padding: 0 0 4px;
+  font-size: 16px;
+  line-height: 20px;
+  width: 100%;
+}

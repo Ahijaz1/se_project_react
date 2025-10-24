@@ -1,0 +1,68 @@
+.card {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.card__name {
+  position: absolute;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.95);
+  font-family: "Cabinet Grotesk", Arial, Helvetica, sans-serif;
+  color: #00000099;
+  font-weight: 700;
+  font-size: 16px;
+  backdrop-filter: blur(4px);
+  margin-top: 15px;
+  margin-left: 102px;
+  margin-right: 102px;
+  margin-bottom: 287px;
+}
+
+.card__image {
+  object-fit: cover;
+  border-radius: 0;
+  background-color: #0000004d;
+  width: 323px;
+  height: 326px;
+}
+
+.card__like-btn {
+  position: absolute;
+  width: 18px;
+  height: 15px;
+  border: none;
+  cursor: pointer;
+  background: transparent url("../../images/heart.svg") no-repeat center;
+  background-size: contain;
+  transition: opacity 0.3s ease;
+  right: 112px;
+  top: 20px;
+  left: 193px;
+  bottom: 291px;
+  padding-left: 0px;
+  margin-left: 10px;
+  padding-right: 0px;
+}
+
+.card__like-btn:hover {
+  opacity: 0.7;
+}
+
+.card__like-btn_active {
+  background-image: url("../../images/heart-active.svg");
+}
