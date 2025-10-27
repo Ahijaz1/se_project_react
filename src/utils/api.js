@@ -1,6 +1,6 @@
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
-function _checkResponse(res) {
+export function checkResponse(res) {
   if (res.ok) return res.json();
 
   // Try to parse as JSON first, fallback to text if it fails
@@ -20,7 +20,7 @@ function _checkResponse(res) {
 
 // Centralized request function to eliminate duplication
 function request(url, options) {
-  return fetch(url, options).then(_checkResponse);
+  return fetch(url, options).then(checkResponse);
 }
 
 /* Get items is the only public GET that runs on page load */
