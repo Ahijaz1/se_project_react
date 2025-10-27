@@ -1,6 +1,6 @@
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
-export function checkResponse(res) {
+function _checkResponse(res) {
   if (res.ok) return res.json();
 
   // Try to parse as JSON first, fallback to text if it fails
@@ -18,24 +18,29 @@ export function checkResponse(res) {
   });
 }
 
+// Centralized request function to eliminate duplication
+function request(url, options) {
+  return fetch(url, options).then(_checkResponse);
+}
+
 /* Get items is the only public GET that runs on page load */
 export function getItems() {
-  return fetch(`${BASE_URL}/items`, {
+  return request(`${BASE_URL}/items`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
-  }).then(checkResponse);
+  });
 }
 
 /* Create item */
 function createItem(data, token) {
-  return fetch(`${BASE_URL}/items`, {
+  return request(`${BASE_URL}/items`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
-  }).then(checkResponse);
+  });
 }
 
 // Legacy function for backward compatibility
@@ -46,13 +51,13 @@ function addItem({ name, imageUrl, weather }) {
 
 /* Delete item */
 function deleteItem(itemId, token) {
-  return fetch(`${BASE_URL}/items/${itemId}`, {
+  return request(`${BASE_URL}/items/${itemId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-  }).then(checkResponse);
+  });
 }
 
 // Legacy function for backward compatibility
@@ -65,32 +70,32 @@ function deleteItemLegacy(id) {
  * Authentication functions (public endpoints)
  */
 function addUser({ email, password, name, avatar }) {
-  return fetch(`${BASE_URL}/signup`, {
+  return request(`${BASE_URL}/signup`, {
     method: "POST",
     body: JSON.stringify({ email, password, name, avatar }),
     headers: { "Content-Type": "application/json" },
-  }).then(checkResponse);
+  });
 }
 
 function login({ email, password }) {
-  return fetch(`${BASE_URL}/signin`, {
+  return request(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-  }).then(checkResponse);
+  });
 }
 
 /* Get current user */
 function getCurrentUser(token) {
-  return fetch(`${BASE_URL}/users/me`, {
+  return request(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-  }).then(checkResponse);
+  });
 }
 
 // Legacy function for backward compatibility
@@ -100,24 +105,24 @@ function jwtBearer(token) {
 
 /* Like item */
 function likeItem(itemId, token) {
-  return fetch(`${BASE_URL}/items/${itemId}/likes`, {
+  return request(`${BASE_URL}/items/${itemId}/likes`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-  }).then(checkResponse);
+  });
 }
 
 /* Unlike item */
 function unlikeItem(itemId, token) {
-  return fetch(`${BASE_URL}/items/${itemId}/likes`, {
+  return request(`${BASE_URL}/items/${itemId}/likes`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-  }).then(checkResponse);
+  });
 }
 
 // Legacy functions for backward compatibility
@@ -133,14 +138,14 @@ function unlike(id) {
 
 /* Update profile */
 function updateProfile(data, token) {
-  return fetch(`${BASE_URL}/users/me`, {
+  return request(`${BASE_URL}/users/me`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
-  }).then(checkResponse);
+  });
 }
 
 // Legacy function for backward compatibility
