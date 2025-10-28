@@ -101,9 +101,6 @@ const RegisterModal = ({
         />
       </label>
       <div className="modal__button-container">
-        <button type="submit" className="modal__submit">
-          Sign Up
-        </button>
         <button className="modal__to-login" type="button" onClick={onLogin}>
           <span className="modal__login-button-text">or Log In</span>
         </button>

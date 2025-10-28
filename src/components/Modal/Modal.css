@@ -1,0 +1,67 @@
+/* Base modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  z-index: 1000;
+}
+
+/* Modal container */
+.modal__container {
+  position: relative;
+  background: white;
+  border-radius: 10px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Close button */
+.modal__close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: transparent;
+  border: none;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  background-image: url("../../images/closebutton.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.7;
+}
+
+.modal__close:hover {
+  opacity: 1;
+}
+
+.modal_type_form .modal__container {
+  padding: 36px;
+  box-sizing: border-box;
+}
+
+.modal_type_image .modal__container {
+  width: 670px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.modal_type_confirm .modal__container {
+  width: 440px;
+  padding: 36px;
+  box-sizing: border-box;
+}

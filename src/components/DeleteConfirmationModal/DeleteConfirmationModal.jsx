@@ -1,20 +1,12 @@
 import "./DeleteConfirmationModal.css";
-import { useEffect } from "react";
 import closeIcon from "../../images/closebutton.png";
 
 function DeleteConfirmationModal({ isOpen, onClose, onCardDelete, itemName }) {
-  // Close with Escape key
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape" && isOpen) onClose();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  if (!isOpen) return null;
 
   return (
     <div
-      className={`modal ${isOpen ? "modal_opened" : ""}`}
+      className="modal modal_opened"
       role="dialog"
       aria-modal="true"
       aria-labelledby="delete-warning"

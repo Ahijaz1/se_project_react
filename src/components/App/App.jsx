@@ -20,7 +20,6 @@ import EditProfileModal from "../EditProfileModal/EditProfileModal";
 // Utility imports
 import { getWeather, filterWeatherData } from "../../utils/weatherApi.js";
 import { coordinates, APIkey } from "../../utils/constants";
-import { defaultClothingItems } from "../../utils/constants";
 import {
   getItems,
   addItem,
@@ -48,11 +47,29 @@ function App() {
     isDay: false,
   });
 
-  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+  const [clothingItems, setClothingItems] = useState([]);
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState();
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [itemToDelete, setItemToDelete] = useState(null);
+
+  // Universal submit handler for consistent loading states and error handling
+  function handleSubmit(request) {
+    // start loading
+    setIsLoading(true);
+    request()
+      // we need to close only in `then`
+      .then(closeActiveModal)
+      // we need to catch possible errors
+      // console.error is used to handle errors if you don't have any other ways for that
+      .catch(console.error)
+      // and in finally we need to stop loading
+      .finally(() => setIsLoading(false));
+  }
+
+  const closeActiveModal = () => {
+    setActiveModal("");
+  };
 
   const handleToggleSwitchChange = () => {
     setCurrentTemperatureUnit(currentTemperatureUnit === "F" ? "C" : "F");
@@ -94,19 +111,30 @@ function App() {
     navigate("/");
   };
 
-  const closeActiveModal = () => {
-    setActiveModal("");
-  };
-
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
-    addItem({ name, imageUrl, weather })
-      .then((newItem) => {
-        setClothingItems((prevItems) => [newItem, ...prevItems]);
-        closeActiveModal();
-      })
-      .catch((err) => {
-        alert("Failed to add item: " + err.message);
+    console.log("=== APP HANDLE ADD ITEM ===");
+    console.log("Received data:", { name, imageUrl, weather });
+    console.log("Current isLoading state:", isLoading);
+    console.log("User authentication status:", { isLoggedIn, currentUser });
+    console.log("JWT token:", localStorage.getItem("jwt"));
+
+    // here we create a function that returns a promise
+    const makeRequest = () => {
+      console.log("Making API request...");
+      // `return` lets us use a promise chain `then, catch, finally`
+      return addItem({ name, imageUrl, weather }).then((newItem) => {
+        console.log("API response - new item:", newItem);
+        console.log("Updating clothingItems state...");
+        setClothingItems((prevItems) => {
+          console.log("Previous items count:", prevItems.length);
+          const updated = [newItem, ...prevItems];
+          console.log("New items count:", updated.length);
+          return updated;
+        });
       });
+    };
+    // here we call handleSubmit passing the request
+    handleSubmit(makeRequest);
   };
 
   const handleDeleteClick = (item) => {
@@ -117,6 +145,21 @@ function App() {
   // Confirm delete handler
   const handleConfirmDelete = () => {
     if (!itemToDelete) return;
+
+    // Check if user is authenticated
+    const token = localStorage.getItem("jwt");
+    if (!token) {
+      alert("Please log in to delete items");
+      return;
+    }
+
+    // Additional validation for current user
+    if (!currentUser || !isLoggedIn) {
+      alert("Please log in to delete items");
+      handleLogout();
+      return;
+    }
+
     const key = itemToDelete._id || itemToDelete.id;
 
     deleteItem(key)
@@ -128,58 +171,111 @@ function App() {
         closeActiveModal();
       })
       .catch((err) => {
+        // If token is expired, redirect to login
+        if (
+          err.message?.includes("token") ||
+          err.message?.includes("expired") ||
+          err.message?.includes("Invalid")
+        ) {
+          alert("Your session has expired. Please log in again.");
+          handleLogout(); // Log out the user
+          return;
+        }
         alert("Failed to delete item: " + err.message);
       });
   };
 
   // Authentication handlers
   const handleRegisterSubmit = (userData) => {
-    setIsLoading(true);
+    console.log("=== REGISTRATION PROCESS STARTED ===");
+    const startTime = performance.now();
 
-    return signup(userData)
-      .then(() => {
-        return signin({
-          email: userData.email,
-          password: userData.password,
-        });
-      })
-      .then((data) => {
-        localStorage.setItem("jwt", data.token);
-        return checkAuth(data.token);
-      })
-      .then((currentUser) => {
-        setCurrentUser(currentUser);
-        setIsLoggedIn(true);
-        closeActiveModal();
-      })
-      .catch((error) => {
-        return Promise.reject(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
+    // here we create a function that returns a promise
+    const makeRequest = () => {
+      // `return` lets us use a promise chain `then, catch, finally`
+      return signup(userData).then((res) => {
+        console.log(
+          `Registration completed in ${performance.now() - startTime}ms`
+        );
+        console.log("Registration response:", res);
+
+        if (res.token && res.user) {
+          // New optimized registration - token and user data included
+          localStorage.setItem("jwt", res.token);
+          setCurrentUser(res.user);
+          setIsLoggedIn(true);
+          console.log("=== OPTIMIZED REGISTRATION COMPLETE ===");
+        } else {
+          // Fallback to old registration flow
+          console.log("Using fallback registration - performing login");
+          return signin({
+            email: userData.email,
+            password: userData.password,
+          }).then((loginRes) => {
+            if (loginRes.token && loginRes.user) {
+              localStorage.setItem("jwt", loginRes.token);
+              setCurrentUser(loginRes.user);
+              setIsLoggedIn(true);
+            } else if (loginRes.token) {
+              localStorage.setItem("jwt", loginRes.token);
+              return checkAuth(loginRes.token).then((currentUser) => {
+                setCurrentUser(currentUser);
+                setIsLoggedIn(true);
+              });
+            }
+          });
+        }
       });
+    };
+    // here we call handleSubmit passing the request
+    handleSubmit(makeRequest);
   };
 
   const handleLoginSubmit = (userData) => {
-    setIsLoading(true);
-    return signin(userData)
-      .then((res) => {
-        if (res.token) {
-          localStorage.setItem("jwt", res.token);
-          return checkAuth(res.token);
-        } else {
-          throw new Error("Login failed: No token received");
-        }
-      })
-      .then((userData) => {
-        setCurrentUser(userData);
-        setIsLoggedIn(true);
-        closeActiveModal();
-      })
-      .catch((err) => {
-        return Promise.reject(err);
-      })
-      .finally(() => setIsLoading(false));
+    // here we create a function that returns a promise
+    const makeRequest = () => {
+      console.log("=== LOGIN PROCESS STARTED ===");
+      const startTime = performance.now();
+
+      // `return` lets us use a promise chain `then, catch, finally`
+      return signin(userData)
+        .then((res) => {
+          console.log(
+            `Login response received in ${performance.now() - startTime}ms`
+          );
+          console.log("Login response:", res);
+
+          if (res.token) {
+            localStorage.setItem("jwt", res.token);
+            console.log("Token stored successfully");
+
+            // Try both old and new response formats for compatibility
+            if (res.user) {
+              // New optimized format with user data included
+              console.log("Using optimized login format with user:", res.user);
+              setCurrentUser(res.user);
+              setIsLoggedIn(true);
+            } else {
+              // Fallback to old format - make checkAuth call
+              console.log("Using fallback login format - calling checkAuth");
+              return checkAuth(res.token).then((userData) => {
+                console.log("CheckAuth response:", userData);
+                setCurrentUser(userData);
+                setIsLoggedIn(true);
+              });
+            }
+          } else {
+            console.error("Login response missing token:", res);
+            throw new Error("Login failed: No token received");
+          }
+        })
+        .catch((error) => {
+          console.error("Login error details:", error);
+          throw error; // Re-throw so handleSubmit can catch it
+        });
+    };
+    // here we call handleSubmit passing the request
+    handleSubmit(makeRequest);
   };
 
   const handleCardLike = ({ id, isLiked }) => {
@@ -193,9 +289,7 @@ function App() {
               cards.map((item) => (item._id === id ? updatedCard : item))
             );
           })
-          .catch((err) => {
-            // Handle error silently or show user-friendly message
-          })
+          .catch(console.error)
       : // if not, send a request to remove the user's id from the card's likes array
         unlikeItem(id, token)
           .then((updatedCard) => {
@@ -203,29 +297,23 @@ function App() {
               cards.map((item) => (item._id === id ? updatedCard : item))
             );
           })
-          .catch((err) => {
-            // Handle error silently or show user-friendly message
-          });
+          .catch(console.error);
   };
 
   const handleEditProfileSubmit = ({ name, avatar }) => {
-    const token = localStorage.getItem("jwt");
-    setIsLoading(true);
-
-    updateProfile({ name, avatar }, token)
-      .then((updatedUser) => {
+    // here we create a function that returns a promise
+    const makeRequest = () => {
+      const token = localStorage.getItem("jwt");
+      // `return` lets us use a promise chain `then, catch, finally`
+      return updateProfile({ name, avatar }, token).then((updatedUser) => {
         setCurrentUser({
           ...currentUser,
           ...updatedUser,
         });
-        closeActiveModal();
-      })
-      .catch((err) => {
-        alert("Failed to update profile: " + err.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
+    };
+    // here we call handleSubmit passing the request
+    handleSubmit(makeRequest);
   };
 
   // ESC key handler
@@ -272,9 +360,7 @@ function App() {
         const filteredData = filterWeatherData(data);
         setWeatherData(filteredData);
       })
-      .catch((err) => {
-        // Handle error silently or show user-friendly message if needed
-      });
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -282,9 +368,7 @@ function App() {
       .then((data) => {
         setClothingItems(data);
       })
-      .catch((err) => {
-        // Handle error silently or show user-friendly message if needed
-      });
+      .catch(console.error);
   }, []);
 
   return (
@@ -337,6 +421,8 @@ function App() {
               onClose={closeActiveModal}
               isOpen={activeModal === "add-garment"}
               onAddItemModalSubmit={handleAddItemModalSubmit}
+              isLoading={isLoading}
+              weatherData={weatherData}
             />
           )}
 

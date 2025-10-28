@@ -12,32 +12,30 @@ function Main({ weatherData, handleCardClick, clothingItems, onCardLike }) {
   }
 
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-  const tempToShow = weatherData.temp?.[currentTemperatureUnit];
   const weatherType = weatherData.type.toLowerCase();
 
-  const allItems = clothingItems || defaultClothingItems;
-  const weatherFilteredItems = allItems.filter((item) => {
-    // Handle case-insensitive weather matching
-    const itemWeather = item.weather?.toLowerCase();
-    return itemWeather === weatherType;
-  });
+  // Filter user items for current weather (handle both cases)
+  const userWeatherItems = clothingItems.filter(
+    (item) =>
+      item.weather?.toLowerCase() === weatherType &&
+      // Filter out test items and broken URLs
+      !item.imageUrl?.includes("example.com") &&
+      item.name !== "testItem" &&
+      item.name?.toLowerCase() !== "testitem"
+  );
 
-  // If no weather-appropriate items, show default items for that weather type
+  // Get default items for this weather type as fallback
   const defaultItemsForWeather = defaultClothingItems.filter(
     (item) => item.weather?.toLowerCase() === weatherType
   );
 
-  // Prioritize default items (with working images) over database items
+  // Combine user items first, then default items (if needed)
   const weatherAppropriateItems = [
-    ...defaultItemsForWeather,
-    ...weatherFilteredItems.filter(
-      (item) =>
-        // Only include database items that don't conflict with default item names
-        !defaultItemsForWeather.some(
-          (defaultItem) => defaultItem.name === item.name
-        ) &&
-        // And have working image URLs (not example.com)
-        !item.imageUrl?.includes("example.com")
+    ...userWeatherItems, // Show user's working items first
+    ...defaultItemsForWeather.filter(
+      (defaultItem) =>
+        // Only show default items if no user items with same name exist
+        !userWeatherItems.some((userItem) => userItem.name === defaultItem.name)
     ),
   ];
 
@@ -64,7 +62,16 @@ function Main({ weatherData, handleCardClick, clothingItems, onCardLike }) {
             ))}
           </ul>
         ) : (
-          <p>No clothing recommendations available for this weather.</p>
+          <div>
+            <p>No clothing recommendations available for this weather.</p>
+            {clothingItems.length > 0 && userWeatherItems.length === 0 && (
+              <p style={{ fontSize: "14px", color: "#666" }}>
+                You have {clothingItems.length} clothing item(s), but none match
+                the current {weatherType} weather. Try adding items for{" "}
+                {weatherType} weather or check your other items in your profile.
+              </p>
+            )}
+          </div>
         )}
       </section>
     </main>

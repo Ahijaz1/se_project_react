@@ -3,7 +3,13 @@ import "./LoginModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useFormAndValidation from "../../utils/useFormAndValidation";
 
-const LoginModal = ({ handleCloseModal, onSubmit, isOpen, onSignUp }) => {
+const LoginModal = ({
+  handleCloseModal,
+  onSubmit,
+  isOpen,
+  onSignUp,
+  isLoading,
+}) => {
   const { values, handleChange, isValid, resetForm } = useFormAndValidation();
   const navigate = useNavigate();
 
@@ -24,7 +30,7 @@ const LoginModal = ({ handleCloseModal, onSubmit, isOpen, onSignUp }) => {
   return (
     <ModalWithForm
       title="Log In"
-      buttonText="Log In"
+      buttonText={isLoading ? "Logging in..." : "Log In"}
       onClose={handleCloseModal}
       isOpen={isOpen}
       formValid={true}

@@ -1,0 +1,25 @@
+.modal__button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.modal__to-register {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+  line-height: 20px;
+  text-decoration: underline;
+  color: #000;
+}
+
+.modal__to-register:hover {
+  opacity: 0.6;
+}
+
+.modal__register-button-text {
+  font-size: 16px;
+  line-height: 20px;
+}

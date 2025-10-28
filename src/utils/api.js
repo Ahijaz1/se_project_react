@@ -63,6 +63,11 @@ function deleteItem(itemId, token) {
 // Legacy function for backward compatibility
 function deleteItemLegacy(id) {
   const token = localStorage.getItem("jwt");
+  if (!token) {
+    return Promise.reject({
+      message: "No authentication token found. Please log in.",
+    });
+  }
   return deleteItem(id, token);
 }
 

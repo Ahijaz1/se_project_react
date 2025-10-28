@@ -28,7 +28,6 @@ const EditProfileModal = ({ isOpen, onClose, onUpdateUser, isLoading }) => {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      closeButtonClass="modal__close_profile"
       noValidate
     >
       <label className="modal__label">
