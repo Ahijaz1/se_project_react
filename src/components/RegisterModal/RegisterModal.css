@@ -1,0 +1,40 @@
+/* Register Modal Specific Styles */
+.register-modal__button {
+  font-family: "Cabinet Grotesk", Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.register-modal__button:hover {
+  opacity: 0.8;
+}
+
+.register-modal__button-container {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #0000004d;
+  margin-right: 300px;
+}
+
+.modal__to-login {
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+  line-height: 20px;
+  width: 80px;
+  height: 40px;
+  color: #00000080;
+  margin-left: 10px;
+}
+
+.modal__to-login:hover {
+  opacity: 0.6;
+}
+
+.modal__login-button-text {
+  font-size: 16px;
+  line-height: 20px;
+}

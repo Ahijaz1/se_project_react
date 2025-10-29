@@ -35,6 +35,7 @@ const LoginModal = ({
       isOpen={isOpen}
       formValid={true}
       onSubmit={handleSubmit}
+      showSubmitButton={false}
     >
       <label htmlFor="login-email" className="modal__label">
         Email*{" "}
@@ -62,8 +63,19 @@ const LoginModal = ({
           required
         />
       </label>
-      <div className="modal__button-container">
-        <button className="modal__to-register" type="button" onClick={onSignUp}>
+      <div className="login-modal__button-container">
+        <button
+          type="submit"
+          className={`modal__submit login-modal__button ${true ? "modal__submit_enabled" : "modal__submit_disabled"}`}
+          disabled={!true}
+        >
+          {isLoading ? "Logging in..." : "Log In"}
+        </button>
+        <button
+          className="modal__to-register login-modal__button"
+          type="button"
+          onClick={onSignUp}
+        >
           <span className="modal__register-button-text">or Sign Up</span>
         </button>
       </div>

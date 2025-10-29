@@ -112,29 +112,17 @@ function App() {
   };
 
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
-    console.log("=== APP HANDLE ADD ITEM ===");
-    console.log("Received data:", { name, imageUrl, weather });
-    console.log("Current isLoading state:", isLoading);
-    console.log("User authentication status:", { isLoggedIn, currentUser });
-    console.log("JWT token:", localStorage.getItem("jwt"));
-
     // here we create a function that returns a promise
     const makeRequest = () => {
-      console.log("Making API request...");
-      // `return` lets us use a promise chain `then, catch, finally`
       return addItem({ name, imageUrl, weather }).then((newItem) => {
-        console.log("API response - new item:", newItem);
-        console.log("Updating clothingItems state...");
         setClothingItems((prevItems) => {
-          console.log("Previous items count:", prevItems.length);
           const updated = [newItem, ...prevItems];
-          console.log("New items count:", updated.length);
           return updated;
         });
       });
     };
     // here we call handleSubmit passing the request
-    handleSubmit(makeRequest);
+    return handleSubmit(makeRequest);
   };
 
   const handleDeleteClick = (item) => {
@@ -187,27 +175,17 @@ function App() {
 
   // Authentication handlers
   const handleRegisterSubmit = (userData) => {
-    console.log("=== REGISTRATION PROCESS STARTED ===");
-    const startTime = performance.now();
-
     // here we create a function that returns a promise
     const makeRequest = () => {
       // `return` lets us use a promise chain `then, catch, finally`
       return signup(userData).then((res) => {
-        console.log(
-          `Registration completed in ${performance.now() - startTime}ms`
-        );
-        console.log("Registration response:", res);
-
         if (res.token && res.user) {
           // New optimized registration - token and user data included
           localStorage.setItem("jwt", res.token);
           setCurrentUser(res.user);
           setIsLoggedIn(true);
-          console.log("=== OPTIMIZED REGISTRATION COMPLETE ===");
         } else {
           // Fallback to old registration flow
-          console.log("Using fallback registration - performing login");
           return signin({
             email: userData.email,
             password: userData.password,
@@ -228,54 +206,39 @@ function App() {
       });
     };
     // here we call handleSubmit passing the request
-    handleSubmit(makeRequest);
+    return handleSubmit(makeRequest);
   };
 
   const handleLoginSubmit = (userData) => {
     // here we create a function that returns a promise
     const makeRequest = () => {
-      console.log("=== LOGIN PROCESS STARTED ===");
-      const startTime = performance.now();
-
-      // `return` lets us use a promise chain `then, catch, finally`
       return signin(userData)
         .then((res) => {
-          console.log(
-            `Login response received in ${performance.now() - startTime}ms`
-          );
-          console.log("Login response:", res);
-
           if (res.token) {
             localStorage.setItem("jwt", res.token);
-            console.log("Token stored successfully");
 
             // Try both old and new response formats for compatibility
             if (res.user) {
               // New optimized format with user data included
-              console.log("Using optimized login format with user:", res.user);
               setCurrentUser(res.user);
               setIsLoggedIn(true);
             } else {
               // Fallback to old format - make checkAuth call
-              console.log("Using fallback login format - calling checkAuth");
               return checkAuth(res.token).then((userData) => {
-                console.log("CheckAuth response:", userData);
                 setCurrentUser(userData);
                 setIsLoggedIn(true);
               });
             }
           } else {
-            console.error("Login response missing token:", res);
             throw new Error("Login failed: No token received");
           }
         })
         .catch((error) => {
-          console.error("Login error details:", error);
           throw error; // Re-throw so handleSubmit can catch it
         });
     };
     // here we call handleSubmit passing the request
-    handleSubmit(makeRequest);
+    return handleSubmit(makeRequest);
   };
 
   const handleCardLike = ({ id, isLiked }) => {
@@ -313,7 +276,7 @@ function App() {
       });
     };
     // here we call handleSubmit passing the request
-    handleSubmit(makeRequest);
+    return handleSubmit(makeRequest);
   };
 
   // ESC key handler

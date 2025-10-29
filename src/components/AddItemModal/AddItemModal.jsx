@@ -13,13 +13,6 @@ export default function AddItemModal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("=== ADD ITEM MODAL SUBMIT ===");
-    console.log("Form values:", values);
-    console.log("Submitting item:", {
-      name: values.name,
-      imageUrl: values.imageUrl,
-      weather: values.weather,
-    });
     onAddItemModalSubmit({
       name: values.name,
       imageUrl: values.imageUrl,
@@ -29,10 +22,7 @@ export default function AddItemModal({
 
   useEffect(() => {
     if (isOpen) {
-      console.log("=== MODAL OPENED - RESETTING FORM ===");
-      console.log("Previous values:", values);
       setValues({ name: "", imageUrl: "", weather: "" });
-      console.log("Form reset to empty values");
     }
   }, [isOpen, setValues]);
 

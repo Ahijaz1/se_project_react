@@ -66,22 +66,23 @@
 
 .header__auth_buttons {
   display: flex;
-  gap: 12px;
+}
+.header__signup_button {
+  padding-left: 20px;
+  padding-right: 10px;
 }
 
+.header__login_button {
+  padding-left: 10px;
+}
 .header__signup_button,
 .header__login_button {
-  padding: 8px 16px;
   border-radius: 4px;
-  border: 1px solid #000;
   cursor: pointer;
   background-color: transparent;
   font-family: "Cabinet Grotesk", Arial, Helvetica, sans-serif;
-  font-size: 16px;
-}
-
-.header__signup_button:hover,
-.header__login_button:hover {
-  background-color: #000;
-  color: white;
+  font-size: 20px;
+  border: none;
+  font-style: bold;
+  font-weight: 700;
 }

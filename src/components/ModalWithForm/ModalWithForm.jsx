@@ -9,6 +9,7 @@ function ModalWithForm({
   onClose,
   onSubmit,
   formValid = true,
+  showSubmitButton = true,
 }) {
   if (!isOpen) return null;
 
@@ -17,13 +18,15 @@ function ModalWithForm({
       <h2 className="modal__title">{title}</h2>
       <form className="modal__form" onSubmit={onSubmit}>
         {children}
-        <button
-          type="submit"
-          className={`modal__submit ${formValid ? "modal__submit_enabled" : "modal__submit_disabled"}`}
-          disabled={!formValid}
-        >
-          {buttonText}
-        </button>
+        {showSubmitButton && (
+          <button
+            type="submit"
+            className={`modal__submit modal__button-shared ${formValid ? "modal__submit_enabled" : "modal__submit_disabled"}`}
+            disabled={!formValid}
+          >
+            {buttonText}
+          </button>
+        )}
       </form>
     </Modal>
   );

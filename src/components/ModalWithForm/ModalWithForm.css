@@ -23,9 +23,9 @@
 }
 .modal__title {
   font-size: 16px;
-  margin: 28px 373px 24px 28px;
   line-height: 20px;
   font-weight: 700;
+  margin: 0 0 24px 0;
 }
 
 .modal__close {
@@ -73,9 +73,6 @@
   display: flex;
   flex-direction: column;
   width: 440px;
-  gap: 24px;
-  margin-left: 28px;
-  margin-bottom: 36px;
 }
 
 .modal__input {
@@ -130,7 +127,7 @@
 }
 
 .modal__submit {
-  width: 124px;
+  width: 86px;
   height: 36px;
   background-color: rgba(0, 0, 0, 0.3);
   color: white;
