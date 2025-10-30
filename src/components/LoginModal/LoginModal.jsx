@@ -16,7 +16,7 @@ const LoginModal = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onSubmit(values)
+    return onSubmit(values)
       .then(() => {
         handleCloseModal();
         resetForm();

@@ -13,7 +13,7 @@ export default function AddItemModal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddItemModalSubmit({
+    return onAddItemModalSubmit({
       name: values.name,
       imageUrl: values.imageUrl,
       weather: values.weather,

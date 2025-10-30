@@ -22,7 +22,7 @@ const RegisterModal = ({
       return;
     }
 
-    onSubmit(values)
+    return onSubmit(values)
       .then(() => {
         handleCloseModal();
         resetForm();

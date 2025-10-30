@@ -57,14 +57,16 @@ function App() {
   function handleSubmit(request) {
     // start loading
     setIsLoading(true);
-    request()
-      // we need to close only in `then`
-      .then(closeActiveModal)
-      // we need to catch possible errors
-      // console.error is used to handle errors if you don't have any other ways for that
-      .catch(console.error)
-      // and in finally we need to stop loading
-      .finally(() => setIsLoading(false));
+    return (
+      request()
+        // we need to close only in `then`
+        .then(closeActiveModal)
+        // we need to catch possible errors
+        // console.error is used to handle errors if you don't have any other ways for that
+        .catch(console.error)
+        // and in finally we need to stop loading
+        .finally(() => setIsLoading(false))
+    );
   }
 
   const closeActiveModal = () => {
