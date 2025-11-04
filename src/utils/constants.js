@@ -88,7 +88,8 @@ export const APIkey = "386ea9a33a9f2e2f5331e09648adfa52";
 
 // Backend base URL
 const BASE_URL =
-  process.env.NODE_ENV === "production"
+  window.location.hostname === "wtwr-pro.tinysun.net" ||
+  window.location.hostname.includes("tinysun.net")
     ? "https://api.wtwr-pro.tinysun.net"
     : "http://localhost:3001";
 
