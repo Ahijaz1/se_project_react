@@ -1,4 +1,4 @@
-// Weather images
+// Weather images //
 
 // Day
 import daysunny from "../images/daysunny.png";
@@ -85,3 +85,11 @@ export const coordinates = {
 
 // Weather API key
 export const APIkey = "386ea9a33a9f2e2f5331e09648adfa52";
+
+// Backend base URL
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://api.wtwr-pro.tinysun.net"
+    : "http://localhost:3001";
+
+export { BASE_URL };

@@ -1,6 +1,5 @@
 import { checkResponse } from "./api.js";
-
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+import { BASE_URL } from "./constants.js";
 
 // Centralized request function to eliminate duplication
 function request(url, options) {
